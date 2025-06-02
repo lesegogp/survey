@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Survey</title>
+  <title>Survey Web</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 </head>
-<body class="bg-gray-400 text-gray-200 min-h-screen p-6 font-sans">
+<body class="bg-gray-900 text-gray-200 min-h-screen p-6 font-sans">
 
   <!-- Navigation Buttons -->
   <div class="text-center mb-6 space-x-4">
@@ -18,7 +18,7 @@
     </button>
   </div>
 
-  <!-- Survey Form -->
+  
   <section id="surveySection" class="max-w-xl mx-auto bg-gray-800 rounded-xl shadow-lg p-6 space-y-4 animate__animated">
     <h2 class="text-2xl font-bold text-blue-400">Survey Form</h2>
     <form id="surveyForm" class="space-y-4">
@@ -46,7 +46,7 @@
       </div>
 
       <div>
-        <p class="font-semibold">How often do you eat out? (1 = Mostly, 5 = Rarely)</p>
+        <p class="font-semibold">How often do you eat out?</p>
         <label><input type="radio" name="eatout" value="1" /> 1</label>
         <label><input type="radio" name="eatout" value="2" /> 2</label>
         <label><input type="radio" name="eatout" value="3" /> 3</label>
@@ -118,7 +118,7 @@
     </form>
   </section>
 
-  <!-- Results -->
+ 
   <section id="resultsSection" class="max-w-xl mx-auto bg-gray-800 rounded-xl shadow-lg p-6 space-y-4 hidden animate__animated">
     <h2 class="text-2xl font-bold text-blue-400">Survey Results</h2>
     <div id="results" class="space-y-2 text-gray-300"></div>
