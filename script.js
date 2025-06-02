@@ -1,4 +1,3 @@
-// Navigation logic
 const surveySection = document.getElementById('surveySection');
 const resultsSection = document.getElementById('resultsSection');
 const showFormBtn = document.getElementById('showFormBtn');
@@ -20,7 +19,6 @@ showResultsBtn.addEventListener('click', () => {
   renderResults();
 });
 
-// Form logic
 const form = document.getElementById('surveyForm');
 const message = document.getElementById('message');
 let surveys = JSON.parse(localStorage.getItem("surveys")) || [];
@@ -33,7 +31,6 @@ form.addEventListener('submit', function (e) {
   const date = document.getElementById('date').value;
   const foodChoices = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
   const eatOutRating = document.querySelector('input[name="eatout"]:checked');
-
   const q1 = document.querySelector('input[name="q1"]:checked');
   const q2 = document.querySelector('input[name="q2"]:checked');
   const q3 = document.querySelector('input[name="q3"]:checked');
@@ -43,7 +40,7 @@ form.addEventListener('submit', function (e) {
   if (!name || isNaN(age) || age < 5 || age > 120 || !date || foodChoices.length === 0 ||
       !eatOutRating || !q1 || !q2 || !q3 || !q4 || !q5) {
     message.style.color = 'red';
-    message.innerText = "⚠️ Please complete the fields correctly.";
+    message.innerText = "Please complete all fields including all rating questions.";
     return;
   }
 
@@ -70,13 +67,12 @@ form.addEventListener('submit', function (e) {
   form.reset();
 });
 
-// Results display logic
 function renderResults() {
   const resultsDiv = document.getElementById('results');
   const surveys = JSON.parse(localStorage.getItem("surveys")) || [];
 
-  if (surveys.length === 0) {
-    resultsDiv.innerHTML = "<p>No Surveys Available Yet.</p>";
+  if (!resultsDiv || surveys.length === 0) {
+    resultsDiv.innerHTML = "<p>No Surveys Available.</p>";
     return;
   }
 
@@ -85,19 +81,19 @@ function renderResults() {
   const avgAge = (ages.reduce((a, b) => a + b, 0) / total).toFixed(1);
   const oldest = Math.max(...ages);
   const youngest = Math.min(...ages);
-
   const pizzaLovers = surveys.filter(s => s.favourite_foods.includes("Pizza")).length;
   const pizzaPercent = ((pizzaLovers / total) * 100).toFixed(1);
   const avgEatOut = (surveys.reduce((sum, s) => sum + s.eat_out_rating, 0) / total).toFixed(1);
 
-  // Lifestyle rating averages
   const lifestyleSums = { q1: 0, q2: 0, q3: 0, q4: 0, q5: 0 };
   surveys.forEach(s => {
-    lifestyleSums.q1 += s.lifestyle_ratings.q1;
-    lifestyleSums.q2 += s.lifestyle_ratings.q2;
-    lifestyleSums.q3 += s.lifestyle_ratings.q3;
-    lifestyleSums.q4 += s.lifestyle_ratings.q4;
-    lifestyleSums.q5 += s.lifestyle_ratings.q5;
+    if (s.lifestyle_ratings) {
+      lifestyleSums.q1 += s.lifestyle_ratings.q1;
+      lifestyleSums.q2 += s.lifestyle_ratings.q2;
+      lifestyleSums.q3 += s.lifestyle_ratings.q3;
+      lifestyleSums.q4 += s.lifestyle_ratings.q4;
+      lifestyleSums.q5 += s.lifestyle_ratings.q5;
+    }
   });
 
   const avgQ = key => (lifestyleSums[key] / total).toFixed(1);
@@ -110,10 +106,10 @@ function renderResults() {
     <p><strong>Pizza Lovers:</strong> ${pizzaPercent}%</p>
     <p><strong>Average Eat Out Rating:</strong> ${avgEatOut}</p>
     <hr />
-    <p><strong>Avg "I like to watch movies":</strong> ${avgQ("q1")}</p>
-    <p><strong>Avg "Outdoor activities":</strong> ${avgQ("q2")}</p>
-    <p><strong>Avg "Prefer reading books":</strong> ${avgQ("q3")}</p>
-    <p><strong>Avg "Sleep before 10pm":</strong> ${avgQ("q4")}</p>
-    <p><strong>Avg "Healthy diet":</strong> ${avgQ("q5")}</p>
+    <p><strong>Avg 'Watch Movies':</strong> ${avgQ("q1")}</p>
+    <p><strong>Avg 'Outdoor Activities':</strong> ${avgQ("q2")}</p>
+    <p><strong>Avg 'Read Books':</strong> ${avgQ("q3")}</p>
+    <p><strong>Avg 'Sleep Early':</strong> ${avgQ("q4")}</p>
+    <p><strong>Avg 'Healthy Diet':</strong> ${avgQ("q5")}</p>
   `;
 }
